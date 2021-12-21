@@ -12,7 +12,6 @@ import QRCodeModal from "algorand-walletconnect-qrcode-modal";
 
 const TopNavigationBar = ({ darkTheme, NavLink }) => {
   const dispatch = useDispatch();
-  const [copied , setCopied] = useState(null)
 
   const addressNum = useSelector((state) => state.status.addressNum);
   const isWalletConnected =
@@ -36,13 +35,6 @@ const TopNavigationBar = ({ darkTheme, NavLink }) => {
       dispatch({ type: "light_mode" });
     }
   };
-  const handleCopy = ()=>{
-    setCopied(true)
-    setTimeout(() => {
-      setCopied(false)
-
-    }, 4000);
-  }
 
   const [width] = useWindowSize();
   const [balance, setBalance] = useState([]);
@@ -214,6 +206,7 @@ const TopNavigationBar = ({ darkTheme, NavLink }) => {
                     <div className="addrBalance">
                       {balance[addressNum]?.balance} Choice
                     </div>
+
                     <CopyToClipboard text={balance[addressNum]?.address}>
                       <div className="addressTxt">
                         <p>{balance[addressNum]?.address}</p>
@@ -223,18 +216,13 @@ const TopNavigationBar = ({ darkTheme, NavLink }) => {
                   </div>
                 </div>
 
-                <div className={`dropDownConnect_items ${
-                          copied ? "green" : ""
-                        }`}>
+                <div className="dropDownConnect_items">
                   {balance?.map((item, index) => {
                     return (
                       <div
                         key={index}
-                        className={`dropDownConnect_item ${
-                          copied ? "green" : ""
-                        }`}
+                        className="dropDownConnect_item"
                         onClick={() => {
-                          handleCopy();
                           dispatch({
                             type: "setAlgoAddress",
                             addressIndex: index,
@@ -242,12 +230,8 @@ const TopNavigationBar = ({ darkTheme, NavLink }) => {
                           });
                         }}
                       >
-                        <p
-                          className={`dropDownConnect_item_txt ${
-                            copied ? "green" : ""
-                          }`}
-                        >
-                          {copied ? "Address Copied!!!" : item.address}
+                        <p className="dropDownConnect_item_txt">
+                          {item.address}
                         </p>
                       </div>
                     );
